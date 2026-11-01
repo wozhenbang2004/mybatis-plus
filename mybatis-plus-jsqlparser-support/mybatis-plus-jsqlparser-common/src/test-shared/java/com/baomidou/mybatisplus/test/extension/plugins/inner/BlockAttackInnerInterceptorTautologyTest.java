@@ -62,16 +62,11 @@ class BlockAttackInnerInterceptorTautologyTest {
     @Test
     void longComparisonPreservesPrecision() {
         for (String statement : new String[]{"update records set status = 2", "delete from records"}) {
-            for (String predicate : new String[]{
-                    "9007199254740992 <> 9007199254740993",
-                    "9007199254740992 != 9007199254740993",
-                    "9007199254740992 < 9007199254740993",
-                    "9007199254740993 > 9007199254740992",
-                    "9223372036854775806 < 9223372036854775807",
-                    "9223372036854775806 <> 9223372036854775807",
-                    "9223372036854775807 = 9223372036854775807",
-                    "9223372036854775807 >= 9223372036854775807",
-                    "9223372036854775807 <= 9223372036854775807"}) {
+            for (String predicate : new String[]{"9007199254740992 <> 9007199254740993",
+                    "9007199254740992 != 9007199254740993", "9007199254740992 < 9007199254740993",
+                    "9007199254740993 > 9007199254740992", "9223372036854775806 < 9223372036854775807",
+                    "9223372036854775806 <> 9223372036854775807", "9223372036854775807 = 9223372036854775807",
+                    "9223372036854775807 >= 9223372036854775807", "9223372036854775807 <= 9223372036854775807"}) {
                 checkEx(statement + " where " + predicate);
                 checkEx(statement + " where id = ? or (" + predicate + ")");
                 checkNotEx(statement + " where id = ? and (" + predicate + ")");
@@ -82,12 +77,9 @@ class BlockAttackInnerInterceptorTautologyTest {
     @Test
     void falseLongComparisonPreservesPrecision() {
         for (String statement : new String[]{"update records set status = 2", "delete from records"}) {
-            for (String predicate : new String[]{
-                    "9007199254740992 = 9007199254740993",
-                    "9007199254740992 >= 9007199254740993",
-                    "9007199254740993 <= 9007199254740992",
-                    "9223372036854775806 = 9223372036854775807",
-                    "9223372036854775806 > 9223372036854775807",
+            for (String predicate : new String[]{"9007199254740992 = 9007199254740993",
+                    "9007199254740992 >= 9007199254740993", "9007199254740993 <= 9007199254740992",
+                    "9223372036854775806 = 9223372036854775807", "9223372036854775806 > 9223372036854775807",
                     "9223372036854775807 < 9223372036854775806"}) {
                 checkNotEx(statement + " where " + predicate);
                 checkEx(statement + " where not (" + predicate + ")");
